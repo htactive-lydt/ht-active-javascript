@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    <style>
+        button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+
+            </div>
+            <div class="col-sm-6">
+                <form action="" method="POST" role="form">
+                    <legend>SEARCH PRODUCT</legend>
+
+                    <div class="form-group">
+                        <label for="">Search product by ID:</label>
+                        <input type="text" class="form-control" id="search_id" placeholder="Input ID product">
+
+
+                        <button type="button" class="btn btn-primary" onclick="searchById()">Search Product</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Search product by type:</label>
+                        <input type="text" class="form-control" id="search_type" placeholder="Input type product">
+                        <button type="button" class="btn btn-primary" onclick="searchByType()">Search Type</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Search product by price:</label>
+                        <input type="text" class="form-control" id="search_price" placeholder="Input type product">
+                        <button type="button" class="btn btn-primary" onclick="searchByPrice()">Search Price</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-10 offset-sm-1">
+                <h2>Product Detail: </h2>
+                <p>Product ID: <span id="prod_id"></span></p>
+                <p>Product Type: <span id="prod_type"></span></p>
+                <p>Product Price: <span id="prod_price"></span></p>
+                <h2>Search Result:</h2>
+                <div id="showData">
+
+                </div>
+                <h2>List Off All Product:</h2>
+                <div id="loadData">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        // Biến để lưu dữ liệu đưa lên table
+        var myProducts = [{
+            "Product ID": "1",
+            "Product Type": "Book",
+            "Price": 456
+        }, {
+            "Product ID": "2",
+            "Product Type": "Book",
+            "Price": 145
+        }, {
+            "Product ID": "3",
+            "Product Type": "Book",
+            "Price": 567
+        }, {
+            "Product ID": "4",
+            "Product Type": "Comic Book",
+            "Price": 234
+        }, {
+            "Product ID": "5",
+            "Product Type": "Cartoon",
+            "Price": 786
+        }, {
+            "Product ID": "6",
+            "Product Type": "News",
+            "Price": 897
+        }, {
+            "Product ID": "7",
+            "Product Type": "Magazine",
+            "Price": 112
+        }, {
+            "Product ID": "8",
+            "Product Type": "Book",
+            "Price": 785
+        }]
+
+        // Xuất tất cả dl vô bảng
+        $(document).ready(function() { /* code here */ });
+        $(function() {
+            var col = [];
+            for (var i = 0; i < myProducts.length; i++) {
+                for (var key in myProducts[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            var table = document.createElement("table");
+            table.className = "table table-bordered table-striped"
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+            var th = document.createElement("th");
+            th.innerHTML = "Examine";
+            tr.appendChild(th);
+
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (let i = 0; i < myProducts.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = myProducts[i][col[j]];
+                }
+                let examine = document.createElement("button");
+                examine.innerHTML = "Examine";
+                examine.className = "btn btn-success";
+                examine.addEventListener("click", () => {
+                    document.getElementById("prod_id").innerHTML = myProducts[i]["Product ID"];
+                    document.getElementById("prod_type").innerHTML = myProducts[i]["Product Type"];
+                    document.getElementById("prod_price").innerHTML = myProducts[i]["Price"];
+                })
+                let cell = document.createElement("td");
+                cell.appendChild(examine);
+                tr.appendChild(cell);
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("loadData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+        });
+
+        function searchById() {
+            var id_product = document.getElementById("search_id").value;
+            var col = [];
+            for (var i = 0; i < myProducts.length; i++) {
+                for (var key in myProducts[i]) {
+                    if (col.indexOf(key) === -1 && myProducts[i]["Product ID"] == id_product) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            var table = document.createElement("table");
+            table.className = "table table-bordered table-striped"
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            var th = document.createElement("th");
+            th.innerHTML = "Examine";
+            tr.appendChild(th);
+
+            var countSearchResult = 0;
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (let i = 0; i < myProducts.length; i++) {
+                if (myProducts[i]["Product ID"] == id_product) {
+
+                    tr = table.insertRow(-1);
+
+                    for (var j = 0; j < col.length; j++) {
+                        var tabCell = tr.insertCell(-1);
+                        tabCell.innerHTML = myProducts[i][col[j]];
+                    }
+                    let examine = document.createElement("button");
+                    examine.innerHTML = "Examine";
+                    examine.className = "btn btn-success";
+                    examine.addEventListener("click", () => {
+                        document.getElementById("prod_id").innerHTML = myProducts[i]["Product ID"];
+                        document.getElementById("prod_type").innerHTML = myProducts[i]["Product Type"];
+                        document.getElementById("prod_price").innerHTML = myProducts[i]["Price"];
+                    })
+                    let cell = document.createElement("td");
+                    cell.appendChild(examine);
+                    tr.appendChild(cell);
+                    countSearchResult++;
+                }
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            if (countSearchResult != 0) {
+                divContainer.appendChild(table);
+            } else divContainer.innerHTML = "<h4 class= 'text-center' style ={color: red}>No Result Matching</h4>";
+        }
+
+        function searchByType() {
+            var type_product = document.getElementById("search_type").value;
+            var col = [];
+            for (var i = 0; i < myProducts.length; i++) {
+                for (var key in myProducts[i]) {
+                    if (col.indexOf(key) === -1 && myProducts[i]["Product Type"] == type_product) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            var table = document.createElement("table");
+            table.className = "table table-bordered table-striped"
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+            var th = document.createElement("th");
+            th.innerHTML = "Examine";
+            tr.appendChild(th);
+            var countSearchResult = 0;
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (let i = 0; i < myProducts.length; i++) {
+                if (myProducts[i]["Product Type"] == type_product) {
+
+                    tr = table.insertRow(-1);
+
+                    for (var j = 0; j < col.length; j++) {
+                        var tabCell = tr.insertCell(-1);
+                        tabCell.innerHTML = myProducts[i][col[j]];
+                    }
+                    let examine = document.createElement("button");
+                    examine.innerHTML = "Examine";
+                    examine.className = "btn btn-success";
+                    examine.addEventListener("click", () => {
+                        document.getElementById("prod_id").innerHTML = myProducts[i]["Product ID"];
+                        document.getElementById("prod_type").innerHTML = myProducts[i]["Product Type"];
+                        document.getElementById("prod_price").innerHTML = myProducts[i]["Price"];
+                    })
+                    let cell = document.createElement("td");
+                    cell.appendChild(examine);
+                    tr.appendChild(cell);
+                    countSearchResult++;
+                }
+            }
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            if (countSearchResult != 0) {
+                divContainer.appendChild(table);
+            } else divContainer.innerHTML = "<h4 class= 'text-center' style ={color: red}>No Result Matching</h4>";
+        }
+
+        function searchByPrice() {
+            var price_product = document.getElementById("search_price").value;
+            var col = [];
+            for (var i = 0; i < myProducts.length; i++) {
+                for (var key in myProducts[i]) {
+                    if (col.indexOf(key) === -1 && myProducts[i]["Price"] <= parseInt(price_product) + 100 && myProducts[i]["Price"] >= parseInt(price_product) - 100) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            var table = document.createElement("table");
+            table.className = "table table-bordered table-striped"
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            var countSearchResult = 0;
+            var th = document.createElement("th");
+            th.innerHTML = "Examine";
+            tr.appendChild(th);
+
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (let i = 0; i < myProducts.length; i++) {
+                if (myProducts[i]["Price"] <= parseInt(price_product) + 100 && myProducts[i]["Price"] >= parseInt(price_product) - 100) {
+
+                    tr = table.insertRow(-1);
+
+                    for (var j = 0; j < col.length; j++) {
+                        var tabCell = tr.insertCell(-1);
+                        tabCell.innerHTML = myProducts[i][col[j]];
+                    }
+                    let examine = document.createElement("button");
+                    examine.innerHTML = "Examine";
+                    examine.className = "btn btn-success";
+                    examine.addEventListener("click", () => {
+                        document.getElementById("prod_id").innerHTML = myProducts[i]["Product ID"];
+                        document.getElementById("prod_type").innerHTML = myProducts[i]["Product Type"];
+                        document.getElementById("prod_price").innerHTML = myProducts[i]["Price"];
+                    })
+                    let cell = document.createElement("td");
+                    cell.appendChild(examine);
+                    tr.appendChild(cell);
+                    countSearchResult++;
+                }
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            if (countSearchResult != 0) {
+                divContainer.appendChild(table);
+            } else divContainer.innerHTML = "<h4 class= 'text-center' style ={color: red}>No Result Matching</h4>";
+        }
+    </script>
+</body>
+
+</html>

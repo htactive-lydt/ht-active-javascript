@@ -1,0 +1,35 @@
+{
+    "myProducts": [{
+        "product_id": "1",
+        "product_type": "Book",
+        "price": 456
+    }, {
+        "product_id": "2",
+        "product_type": "Book",
+        "price": 145
+    }, {
+        "product_id": "3",
+        "product_type": "Book",
+        "price": 567
+    }, {
+        "product_id": "4",
+        "product_type": "Comic Book",
+        "price": 234
+    }, {
+        "product_id": "5",
+        "product_type": "Cartoon",
+        "price": 786
+    }, {
+        "product_id": "6",
+        "product_type": "News",
+        "price": 897
+    }, {
+        "product_id": "7",
+        "product_type": "Magazine",
+        "price": 112
+    }, {
+        "product_id": "8",
+        "product_type": "Book",
+        "price": 785
+    }]
+}
